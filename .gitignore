@@ -7,3 +7,9 @@ Secrets.xcconfig
 
 # Scratch directory
 scratch/
+
+# Xcode user data
+*.xcuserstate
+xcuserdata/
+**/xcuserdata/
+*.xcbkptlist

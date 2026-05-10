@@ -1,0 +1,24 @@
+{
+  "originHash" : "",
+  "pins" : [
+    {
+      "identity" : "charts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChartsOrg/Charts",
+      "state" : {
+        "revision" : "dd9c72e3d7e751e769971092a6bd72d39198ae63",
+        "version" : "5.1.0"
+      }
+    },
+    {
+      "identity" : "swiftwhisper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exPHAT/SwiftWhisper",
+      "state" : {
+        "revision" : "a192004db08de7c6eaa169eede77f1625e7d23fb",
+        "version" : "1.2.0"
+      }
+    }
+  ],
+  "version" : 3
+}

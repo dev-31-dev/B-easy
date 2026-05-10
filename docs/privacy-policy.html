@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — B-easy</title>
+    <style>
+        :root {
+            --bg: #faf9f6;
+            --fg: #1a1a1a;
+            --accent: #2d6a4f;
+            --muted: #6b7280;
+            --card: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #111111;
+                --fg: #e5e5e5;
+                --accent: #52b788;
+                --muted: #9ca3af;
+                --card: #1c1c1e;
+                --border: #2c2c2e;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 36px;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        p,
+        li {
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        a {
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <p class="subtitle">Last updated: May 2026 · B-easy by B-easy team</p>
+
+        <h2>1. Overview</h2>
+        <p>B-easy ("the App") is a business inventory and billing application. We are committed to protecting your
+            privacy. This policy explains what data we collect, how we use it, and your rights.</p>
+
+        <h2>2. Data Stored Locally on Your Device</h2>
+        <p>The vast majority of your data never leaves your device. The following is stored <strong>only on your iPhone
+                or iPad</strong> in an encrypted local database:</p>
+        <ul>
+            <li>Inventory items, stock levels, and product photos</li>
+            <li>Sales and purchase transactions</li>
+            <li>Customer and supplier profiles (including GSTIN)</li>
+            <li>Invoices, GST reports, and financial summaries</li>
+            <li>App settings and preferences</li>
+        </ul>
+        <div class="card">
+            <strong>We cannot access, read, or recover this data.</strong> It exists only on your device. If you delete
+            the app without backing up, this data is permanently lost.
+        </div>
+
+        <h2>3. Data Stored on Our Servers</h2>
+        <p>We use Supabase (a secure, open-source backend) to store the following minimal data for authentication
+            purposes only:</p>
+        <ul>
+            <li><strong>Phone number</strong> — used for OTP-based sign-in</li>
+            <li><strong>Your name and shop name</strong> — provided during sign-up</li>
+            <li><strong>Account creation date</strong></li>
+        </ul>
+        <p>This data is stored securely with Row Level Security (RLS), meaning only you can access your own profile.</p>
+
+        <h2>4. Third-Party Services</h2>
+        <ul>
+            <li><strong>Supabase</strong> — Authentication and user profile storage. <a
+                    href="https://supabase.com/privacy" target="_blank">Supabase Privacy Policy</a></li>
+            <li><strong>Twilio</strong> — SMS delivery for OTP verification. <a
+                    href="https://www.twilio.com/legal/privacy" target="_blank">Twilio Privacy Policy</a></li>
+            <li><strong>Google Gemini API</strong> — AI-powered voice entry and bill scanning. Text prompts (item names,
+                quantities, prices) are sent to Google's servers for processing. No personal information, financial
+                records, or customer data is included in these prompts. <a href="https://ai.google.dev/terms"
+                    target="_blank">Google AI Terms</a></li>
+        </ul>
+
+        <h2>5. Permissions We Request</h2>
+        <ul>
+            <li><strong>Camera</strong> — To capture product photos and scan barcodes</li>
+            <li><strong>Microphone</strong> — For voice-based sales and purchase entry</li>
+            <li><strong>Speech Recognition</strong> — To transcribe voice input into text</li>
+            <li><strong>Photo Library</strong> — To select product images from your gallery</li>
+        </ul>
+        <p>These permissions are used solely for the stated purposes and can be revoked at any time in your device
+            Settings.</p>
+
+        <h2>6. Data Backup</h2>
+        <p>You can export your local database as a backup file using the in-app "Data Backup" feature. This file is
+            controlled entirely by you — we never upload or access it. You can restore from a backup on the same or a
+            different device.</p>
+
+        <h2>7. Account Deletion</h2>
+        <p>You can delete your account at any time from <strong>Profile → Settings → Delete Account</strong>. This will:
+        </p>
+        <ul>
+            <li>Delete your Supabase authentication record and profile</li>
+            <li>Erase all local data from your device</li>
+            <li>This action is permanent and irreversible</li>
+        </ul>
+
+        <h2>8. Children's Privacy</h2>
+        <p>B-easy is a business application not intended for children under 13. We do not knowingly collect data from
+            children.</p>
+
+        <h2>9. Changes to This Policy</h2>
+        <p>We may update this policy from time to time. Changes will be reflected by the "Last updated" date at the top
+            of this page.</p>
+
+        <h2>10. Contact Us</h2>
+        <p>If you have questions about this privacy policy, contact us at: <a
+                href="mailto:sourav@beasy.app">sourav@beasy.app</a></p>
+    </div>
+</body>
+
+</html>
