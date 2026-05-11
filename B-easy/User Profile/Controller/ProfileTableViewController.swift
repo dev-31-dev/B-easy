@@ -689,14 +689,14 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
     }
 
     private func showTermsAndConditions() {
-        if let url = URL(string: "https://souravbeasy.github.io/B-easy/terms.html") {
+        if let url = URL(string: "https://souravgupta2111.github.io/Ledgile/terms.html") {
             let safari = SFSafariViewController(url: url)
             present(safari, animated: true)
         }
     }
 
     private func showPrivacyPolicy() {
-        if let url = URL(string: "https://souravbeasy.github.io/B-easy/privacy-policy.html") {
+        if let url = URL(string: "https://souravgupta2111.github.io/Ledgile/privacy-policy.html") {
             let safari = SFSafariViewController(url: url)
             present(safari, animated: true)
         }
@@ -707,7 +707,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "-"
         showSimpleInfo(
             title: "About",
-            message: "Tabs\nVersion \(version) (\(build))\nInventory, billing, and credit tracking for your store."
+            message: "B-easy\nVersion \(version) (\(build))\nInventory, billing, and credit tracking for your store."
         )
     }
 
