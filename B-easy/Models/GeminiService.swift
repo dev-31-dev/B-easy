@@ -11,23 +11,7 @@ final class GeminiService {
         if let val = plistValue, !val.isEmpty, !val.hasPrefix("$(") {
             return val.trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        if let url = Bundle.main.url(forResource: "Secrets", withExtension: "xcconfig"),
-           let content = try? String(contentsOf: url, encoding: .utf8) {
-            for line in content.components(separatedBy: .newlines) {
-                let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                if trimmed.hasPrefix(key) {
-                    let parts = trimmed.split(separator: "=", maxSplits: 1)
-                    if parts.count == 2 {
-                        var val = String(parts[1]).trimmingCharacters(in: .whitespacesAndNewlines)
-                        val = val.replacingOccurrences(of: "\"", with: "")
-                        val = val.replacingOccurrences(of: "$()", with: "/")
-                        print("[GeminiService] Resolved \(key) from Secrets.xcconfig: '\(val.prefix(10))...'")
-                        return val
-                    }
-                }
-            }
-        }
-        print("[GeminiService] Failed to resolve \(key).")
+        print("[GeminiService] Failed to resolve \(key) from Info.plist.")
         return ""
     }
 

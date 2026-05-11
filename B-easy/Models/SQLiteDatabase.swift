@@ -27,7 +27,7 @@ final class SQLiteDatabase: Database {
         let dbURL = docs.appendingPathComponent("ledgile.sqlite")
         dbPath = dbURL.path
 
-        guard sqlite3_open(dbPath, &db) == SQLITE_OK else {
+        guard sqlite3_open_v2(dbPath, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK else {
             print("[SQLiteDB] ERROR: Could not open database at \(dbPath)")
             return
         }
@@ -52,7 +52,7 @@ final class SQLiteDatabase: Database {
         try? FileManager.default.removeItem(atPath: dbPath + "-wal")
         try? FileManager.default.removeItem(atPath: dbPath + "-shm")
         
-        guard sqlite3_open(dbPath, &db) == SQLITE_OK else {
+        guard sqlite3_open_v2(dbPath, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK else {
             print("[SQLiteDB] ERROR: Could not reopen database at \(dbPath)")
             return
         }
@@ -60,6 +60,8 @@ final class SQLiteDatabase: Database {
         exec("PRAGMA journal_mode=WAL")
         exec("PRAGMA foreign_keys=ON")
         createTables()
+        migrateGSTColumns()
+        migrateProfileGSTINColumns()
     }
 
 
@@ -79,7 +81,10 @@ final class SQLiteDatabase: Database {
             last_restock_date TEXT,
             is_active INTEGER NOT NULL DEFAULT 1,
             sales_count INTEGER,
-            sales_tier INTEGER
+            sales_tier INTEGER,
+            hsn_code TEXT,
+            gst_rate REAL,
+            cess_rate REAL
         );
 
         CREATE TABLE IF NOT EXISTS item_batches (
@@ -110,7 +115,17 @@ final class SQLiteDatabase: Database {
             customer_phone TEXT,
             supplier_name TEXT,
             total_amount REAL NOT NULL,
-            notes TEXT
+            notes TEXT,
+            buyer_gstin TEXT,
+            place_of_supply TEXT,
+            place_of_supply_code TEXT,
+            is_inter_state INTEGER,
+            total_taxable_value REAL,
+            total_cgst REAL,
+            total_sgst REAL,
+            total_igst REAL,
+            total_cess REAL,
+            is_reverse_charge INTEGER
         );
 
         CREATE TABLE IF NOT EXISTS transaction_items (
@@ -122,7 +137,14 @@ final class SQLiteDatabase: Database {
             quantity INTEGER NOT NULL,
             selling_price_per_unit REAL,
             cost_price_per_unit REAL,
-            created_date TEXT NOT NULL
+            created_date TEXT NOT NULL,
+            hsn_code TEXT,
+            gst_rate REAL,
+            taxable_value REAL,
+            cgst_amount REAL,
+            sgst_amount REAL,
+            igst_amount REAL,
+            cess_amount REAL
         );
 
         CREATE TABLE IF NOT EXISTS sale_item_batches (
@@ -178,7 +200,14 @@ final class SQLiteDatabase: Database {
             gst_number TEXT,
             expiry_notice_days INTEGER NOT NULL DEFAULT 14,
             expiry_warning_days INTEGER NOT NULL DEFAULT 7,
-            expiry_critical_days INTEGER NOT NULL DEFAULT 3
+            expiry_critical_days INTEGER NOT NULL DEFAULT 3,
+            is_gst_registered INTEGER NOT NULL DEFAULT 0,
+            gst_scheme TEXT,
+            business_state TEXT,
+            business_state_code TEXT,
+            prices_include_gst INTEGER NOT NULL DEFAULT 1,
+            default_gst_rate REAL,
+            composition_rate REAL
         );
 
         CREATE TABLE IF NOT EXISTS customers (

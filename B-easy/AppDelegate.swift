@@ -8,10 +8,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Kick off any one-time embedding rebuild early so scan flows don't hit stale vectors.
         ProductFingerprintManager.shared.prepareEmbeddingsForCurrentExtractor()
         
-        // Reconcile stock counters with batch data after DB is fully ready
-        DispatchQueue.global(qos: .utility).async {
-            AppDataModel.shared.dataModel.reconcileAllStock()
-        }
+        // Reconcile stock counters with batch data (runs synchronously — fast, avoids race conditions)
+        AppDataModel.shared.dataModel.reconcileAllStock()
         
         return true
     }

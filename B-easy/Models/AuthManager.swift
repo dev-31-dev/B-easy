@@ -10,23 +10,7 @@ class AuthManager {
         if let val = plistValue, !val.isEmpty, !val.hasPrefix("$(") {
             return val.trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        if let url = Bundle.main.url(forResource: "Secrets", withExtension: "xcconfig"),
-           let content = try? String(contentsOf: url, encoding: .utf8) {
-            for line in content.components(separatedBy: .newlines) {
-                let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                if trimmed.hasPrefix(key) {
-                    let parts = trimmed.split(separator: "=", maxSplits: 1)
-                    if parts.count == 2 {
-                        var val = String(parts[1]).trimmingCharacters(in: .whitespacesAndNewlines)
-                        val = val.replacingOccurrences(of: "\"", with: "")
-                        val = val.replacingOccurrences(of: "$()", with: "/")
-                        print("[AuthManager] Resolved \(key) from Secrets.xcconfig: '\(val)'")
-                        return val
-                    }
-                }
-            }
-        }
-        print("[AuthManager] Failed to resolve \(key).")
+        print("[AuthManager] Failed to resolve \(key) from Info.plist.")
         return ""
     }
 
@@ -40,26 +24,30 @@ class AuthManager {
 
     private let session = URLSession.shared
 
-    // MARK: - Session Keys (UserDefaults)
+    // MARK: - Session Keys
 
     private let accessTokenKey = "supabaseAccessToken"
     private let refreshTokenKey = "supabaseRefreshToken"
     private let userIdKey = "supabaseUserId"
     private let isLoggedInKey = "supabaseIsLoggedIn"
 
+    private let keychain = KeychainHelper.shared
     private let defaults = UserDefaults.standard
 
-    private init() {}
+    private init() {
+        // One-time migration: move tokens from UserDefaults to Keychain
+        migrateTokensToKeychainIfNeeded()
+    }
 
     // MARK: - Public: Session State
     var isLoggedIn: Bool {
         defaults.bool(forKey: isLoggedInKey)
     }
     var currentUserId: String? {
-        defaults.string(forKey: userIdKey)
+        keychain.read(forKey: userIdKey)
     }
     var accessToken: String? {
-        defaults.string(forKey: accessTokenKey)
+        keychain.read(forKey: accessTokenKey)
     }
     var isConfigured: Bool {
         !supabaseURL.isEmpty && !supabaseAnonKey.isEmpty &&
@@ -196,13 +184,13 @@ class AuthManager {
             }
         }
 
-        // Clear local session
-        defaults.removeObject(forKey: accessTokenKey)
-        defaults.removeObject(forKey: refreshTokenKey)
-        defaults.removeObject(forKey: userIdKey)
+        // Clear Keychain tokens
+        keychain.delete(forKey: accessTokenKey)
+        keychain.delete(forKey: refreshTokenKey)
+        keychain.delete(forKey: userIdKey)
         defaults.set(false, forKey: isLoggedInKey)
         defaults.removeObject(forKey: "userDidCompleteOnboarding")
-        print("[AuthManager] User logged out. Session cleared.")
+        print("[AuthManager] User logged out. Session cleared from Keychain.")
     }
 
     // MARK: - Public: Delete Account
@@ -248,7 +236,7 @@ class AuthManager {
 
     func refreshSessionIfNeeded(completion: ((Bool) -> Void)? = nil) {
         guard isConfigured,
-              let refreshToken = defaults.string(forKey: refreshTokenKey),
+              let refreshToken = keychain.read(forKey: refreshTokenKey),
               !refreshToken.isEmpty else {
             completion?(false)
             return
@@ -299,18 +287,18 @@ class AuthManager {
             guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { return }
 
             if let accessToken = json["access_token"] as? String {
-                defaults.set(accessToken, forKey: accessTokenKey)
+                keychain.save(accessToken, forKey: accessTokenKey)
             }
             if let refreshToken = json["refresh_token"] as? String {
-                defaults.set(refreshToken, forKey: refreshTokenKey)
+                keychain.save(refreshToken, forKey: refreshTokenKey)
             }
             if let user = json["user"] as? [String: Any],
                let userId = user["id"] as? String {
-                defaults.set(userId, forKey: userIdKey)
+                keychain.save(userId, forKey: userIdKey)
             }
 
             defaults.set(true, forKey: isLoggedInKey)
-            print("[AuthManager] Session saved successfully.")
+            print("[AuthManager] Session saved to Keychain.")
         } catch {
             print("[AuthManager] Failed to parse session: \(error)")
         }
@@ -415,5 +403,28 @@ class AuthManager {
             case .unknown: return "An unknown error occurred."
             }
         }
+    }
+    // MARK: - Migration (UserDefaults → Keychain)
+
+    private func migrateTokensToKeychainIfNeeded() {
+        let migrationKey = "didMigrateTokensToKeychain"
+        guard !defaults.bool(forKey: migrationKey) else { return }
+
+        // Move tokens from UserDefaults to Keychain if they exist
+        if let token = defaults.string(forKey: accessTokenKey) {
+            keychain.save(token, forKey: accessTokenKey)
+            defaults.removeObject(forKey: accessTokenKey)
+        }
+        if let token = defaults.string(forKey: refreshTokenKey) {
+            keychain.save(token, forKey: refreshTokenKey)
+            defaults.removeObject(forKey: refreshTokenKey)
+        }
+        if let userId = defaults.string(forKey: userIdKey) {
+            keychain.save(userId, forKey: userIdKey)
+            defaults.removeObject(forKey: userIdKey)
+        }
+
+        defaults.set(true, forKey: migrationKey)
+        print("[AuthManager] Migrated tokens from UserDefaults to Keychain.")
     }
 }
