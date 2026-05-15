@@ -90,6 +90,15 @@ Ledgile/
 
 ---
 
+## Contributors
+
+- [Sourav Gupta](https://github.com/Souravgupta2111)
+- [Shivraj Pun](https://github.com/Shivraj-Pun)
+- [Devansh Thapliyal](https://github.com/dev-31-dev)
+- [Bhoomika Bhatt](https://github.com/bhoomikabhatt05)
+
+---
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -99,11 +108,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <i>Designed and engineered for the modern retail ecosystem.</i>
 </div>
----
-
-## Contributors
-
-- [Sourav Gupta](https://github.com/Souravgupta2111)
-- [Shivraj Pun](https://github.com/Shivraj-Pun)
-- [Devansh Thapliyal](https://github.com/dev-31-dev)
-- [Bhoomika Bhatt](https://github.com/bhoomikabhatt05)
