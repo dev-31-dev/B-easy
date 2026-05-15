@@ -52,7 +52,7 @@
 ## Project Structure
 
 ```text
-Ledgile/
+B-easy/
 ├── Tabs/
 │   ├── DashboardTab/      # Main analytics, charts, and top-level reporting
 │   ├── SalesTab/          # Point of sale, voice entry, and transaction creation
