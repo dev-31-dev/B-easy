@@ -1,4 +1,4 @@
-# B-easy
+#B-easy
 
 <div align="center">
   <img src="https://img.shields.io/badge/Platform-iOS-blue.svg?style=flat-square" alt="Platform: iOS" />
