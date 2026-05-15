@@ -2,7 +2,6 @@ import UIKit
 
 class SearchTabTableViewCell: UITableViewCell {
     @IBOutlet weak var searchCategoryLabel: UILabel!
-
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = .clear
