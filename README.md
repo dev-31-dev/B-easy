@@ -103,6 +103,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contributors
 
-- [Sourav Gupta](https://github.com/Souravgupta2111))
+- [Sourav Gupta](https://github.com/Souravgupta2111)
 - [Shivraj Pun](https://github.com/Shivraj-Pun)
 - [Devansh Thapliyal](https://github.com/dev-31-dev)
+- [Bhoomika Bhatt](https://github.com/bhoomikabhatt05)
